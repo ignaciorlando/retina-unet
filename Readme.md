@@ -74,6 +74,7 @@ The following dependencies are needed:
 - h5py >=2.6.0
 - ConfigParser >=3.5.0b2
 - scikit-learn >= 0.17.1
+- [pydot_ng](https://pypi.python.org/pypi/pydot-ng)
 
 
 Also, you will need the DRIVE database, which can be freely downloaded as explained in the next section.

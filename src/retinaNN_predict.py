@@ -8,7 +8,7 @@
 
 #Python
 import numpy as np
-import ConfigParser
+import configparser
 from matplotlib import pyplot as plt
 #Keras
 from keras.models import model_from_json
@@ -112,8 +112,8 @@ model = model_from_json(open(path_experiment+name_experiment +'_architecture.jso
 model.load_weights(path_experiment+name_experiment + '_'+best_last+'_weights.h5')
 #Calculate the predictions
 predictions = model.predict(patches_imgs_test, batch_size=32, verbose=2)
-print "predicted images size :"
-print predictions.shape
+print("predicted images size :")
+print(predictions.shape)
 
 #===== Convert the prediction arrays in corresponding images
 pred_patches = pred_to_imgs(predictions,"original")
@@ -138,9 +138,9 @@ kill_border(pred_imgs, test_border_masks)  #DRIVE MASK  #only for visualization
 orig_imgs = orig_imgs[:,:,0:full_img_height,0:full_img_width]
 pred_imgs = pred_imgs[:,:,0:full_img_height,0:full_img_width]
 gtruth_masks = gtruth_masks[:,:,0:full_img_height,0:full_img_width]
-print "Orig imgs shape: " +str(orig_imgs.shape)
-print "pred imgs shape: " +str(pred_imgs.shape)
-print "Gtruth imgs shape: " +str(gtruth_masks.shape)
+print("Orig imgs shape: " +str(orig_imgs.shape))
+print("pred imgs shape: " +str(pred_imgs.shape))
+print("Gtruth imgs shape: " +str(gtruth_masks.shape))
 visualize(group_images(orig_imgs,N_visual),path_experiment+"all_originals")#.show()
 visualize(group_images(pred_imgs,N_visual),path_experiment+"all_predictions")#.show()
 visualize(group_images(gtruth_masks,N_visual),path_experiment+"all_groundTruths")#.show()
