@@ -14,6 +14,7 @@ from keras.callbacks import ModelCheckpoint, LearningRateScheduler
 from core.augmentation import data_augmentation
 from core.preprocess import load_pickle_subset
 from core.models import unet
+from core.evaluation_metrics.evaluation_metrics import dice_coef_loss, dice_coef
 
 from shutil import rmtree
 from numpy import random
@@ -52,7 +53,7 @@ def configure_evaluation_metrics(config):
     if 'accuracy' in splitted_input:
         metrics = metrics + ['accuracy']
     if 'dice_coef' in splitted_input:
-        metrics = metrics + ['dice_coef']        
+        metrics = metrics + [dice_coef]        
     return metrics
 
 
@@ -80,8 +81,12 @@ def configure_data_generators(type_data, input_data_path, image_shape, batch_siz
     return full_flow, image_generator, label_generator, images_flow, labels_flow
 
     
-
-
+def configure_loss(config):
+    # configure loss function
+    if 'dice_coef_loss' in config['loss']:
+        return [ dice_coef_loss ]
+    else:
+        return [ config['loss'] ]
 
 
 
@@ -126,8 +131,11 @@ def run_training(input_data_path, output_path, config_file):
     # assign evaluation metrics
     metrics = configure_evaluation_metrics(config['evaluation'])
 
+    # initialize the loss function
+    loss = configure_loss(config['loss'])
+
     # compile the model
-    model.compile(optimizer=optimizer, loss=config['loss']['loss'], metrics=metrics)
+    model.compile(optimizer=optimizer, loss=loss, metrics=metrics)
 
     # check how the model looks like
     #plot_model(model, to_file=path.join(output_path, name_experiment + '_model.png')) 
